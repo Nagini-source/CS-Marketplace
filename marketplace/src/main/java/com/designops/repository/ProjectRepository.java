@@ -10,4 +10,6 @@ import com.designops.model.Users;
 public interface ProjectRepository extends JpaRepository<Project, Integer>{
   
 	Project findByprojectid(int projectid);
+//	Project findByProjectname(String projectname);
+	List<Project> findByProjectname(String projectname);
 	}

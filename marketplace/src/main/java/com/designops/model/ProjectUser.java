@@ -27,6 +27,36 @@ public class ProjectUser {
 	
 	private Integer role_id;
 	
+	private String rolename;
+	
+	private String email;
+	
+	private String username;
+	
+	public String getRolename() {
+		return rolename;
+	}
+
+	public void setRolename(String rolename) {
+		this.rolename = rolename;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public Integer getProjectuserroleid() {
 		return projectuserroleid;
 	}

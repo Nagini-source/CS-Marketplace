@@ -1,10 +1,8 @@
 package com.designops.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
@@ -25,9 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.designops.exception.UserAlreadyExistsException;
 import com.designops.exception.UserNotFoundException;
-import com.designops.model.Project;
 import com.designops.model.ProjectUser;
-import com.designops.model.Role;
 import com.designops.model.Users;
 import com.designops.repository.ProjectRepository;
 import com.designops.repository.ProjectUserRepository;
@@ -36,6 +32,7 @@ import com.designops.repository.RoleRepository;
 import com.designops.repository.UsersRepository;
 import com.designops.utility.Constants;
 import com.designops.utility.Email;
+import com.designops.utility.PasswordGenerator;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -83,16 +80,21 @@ public class UsersController {
 			user.setUsername(users.getEmail());
 			user.setName(users.getName());
 			user.setIsActive("1");
-			String encrptedRandomPwd = passwordEncoder.encode(users.getPassword());
+			System.out.println("Random Password="+PasswordGenerator.generatePassword(8));
+			String encrptedRandomPwd = passwordEncoder.encode(PasswordGenerator.generatePassword(8));
 			user.setPassword(encrptedRandomPwd);
 			Users insertedUser = usersRepository.save(user);
 			for (int i = 0; i < users.getProjectList().size(); i++) {
 				projectuser= new ProjectUser();
 				projectuser.setProjectid(users.getProjectList().get(i).getProjectid());
 				projectuser.setUserid(user.getUserid());
-				projectuser.setRole_id(42);
+				projectuser.setRole_id(101);
+				projectuser.setRolename("Observer");
+				projectuser.setEmail(users.getEmail());
+				projectuser.setUsername(users.getName());
 				projectUserRepository.save(projectuser);
 			}
+
 //			List<Project> newProjectList = users.getProjectList();
 //			List<Project> existingProjectList = new ArrayList<>();
 //			for (int i = 0; i < newProjectList.size(); i++) {

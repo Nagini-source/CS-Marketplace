@@ -32,63 +32,77 @@ public class Project {
 ////	}
 //	
 //	public Project() {}
-	
+
 	@Id
 	@GeneratedValue
-	@Column(name="projectid")
+	@Column(name = "projectid")
 	private Integer projectid;
-	
-	@Column(name="projectname")
+
+	@Column(name = "projectname")
 	private String projectname;
-	
+
 //	@OneToMany(mappedBy="projectList",cascade = CascadeType.ALL)
 //	private List<Users> users =new ArrayList<>();
-	
+
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "projectuser", joinColumns = @JoinColumn(name = "projectid"), inverseJoinColumns = @JoinColumn(name = "userid"))
-	private List<Users> users =new ArrayList<>();
-	
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "projectuser", joinColumns = @JoinColumn(name = "projectid"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private List<Role> roles =new ArrayList<>();
-	
-	public List<Role> getRoles() {
-		return roles;
-	}
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
-	}
-	private String projecttype;
-	
+	private List<ProjectUser> projectuser = new ArrayList<>();
+
+	private String artifactcategory;
+
 	private String description;
 	
+	
+//	private List<ProjectUser> projuser =new ArrayList<>();
+
+//	@ManyToMany(cascade = CascadeType.ALL)
+//	@JoinTable(name = "projectuser", joinColumns = @JoinColumn(name = "projectid"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+//	private List<Role> roles = new ArrayList<>();
+//
+//	public List<Role> getRoles() {
+//		return roles;
+//	}
+//
+//	public void setRoles(List<Role> roles) {
+//		this.roles = roles;
+//	}
+
+	public List<ProjectUser> getProjectuser() {
+		return projectuser;
+	}
+
+	public void setProjectuser(List<ProjectUser> projectuser) {
+		this.projectuser = projectuser;
+	}
+
+	public String getArtifactcategory() {
+		return artifactcategory;
+	}
+
+	public void setArtifactcategory(String artifactcategory) {
+		this.artifactcategory = artifactcategory;
+	}
+
 	public Integer getProjectid() {
 		return projectid;
 	}
+
 	public void setProjectid(Integer projectid) {
 		this.projectid = projectid;
 	}
+
 	public String getProjectname() {
 		return projectname;
 	}
+
 	public void setProjectname(String projectname) {
 		this.projectname = projectname;
 	}
-	public List<Users> getUsers() {
-		return users;
-	}
-	public void setUsers(List<Users> users) {
-		this.users = users;
-	}
-	public String getProjecttype() {
-		return projecttype;
-	}
-	public void setProjecttype(String projecttype) {
-		this.projecttype = projecttype;
-	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}

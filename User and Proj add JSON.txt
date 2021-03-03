@@ -1,0 +1,41 @@
+{
+  "email": "test@gmail.com",
+  "name": "test",
+
+ 
+
+  "projectList": [
+     {
+      "projectid":"1",
+      "projectname":"proj1"
+     },
+    {  
+      "projectid":"2",
+      "projectname":"proj2"
+     }
+  ],
+  "username": "test@gmail.com"
+}
+
+
+{
+  "artifactcategory": "Category,Library",
+  "description": "test proj",
+  "projectname": "Proj5543",
+  "projectuser": [
+    {
+      "userid":"29",
+      "email": "a@a.com",
+      "role_id": 42,
+      "rolename": "java",
+      "username": "a@a.com"
+    },
+    {
+      "userid":"34",
+      "email": "k@k.com",
+      "role_id": 28,
+      "rolename": "php",
+      "username": "k@k.com"
+    }
+  ]
+}

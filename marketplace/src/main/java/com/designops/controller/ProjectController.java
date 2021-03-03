@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.designops.exception.ProjectAlreadyExistsException;
 import com.designops.exception.ResourceNotFoundException;
 import com.designops.exception.UserNotFoundException;
 import com.designops.model.Project;
@@ -61,7 +62,7 @@ public class ProjectController {
 		Users user = usersRepository.findById(user_id)
 				.orElseThrow(() -> new UserNotFoundException("User not found for this id :: " + user_id));
 		user.getProjectList().add(project);
-		project.getUsers().add(user);
+		// project.getUsers().add(user);
 		usersRepository.save(user);
 
 	}
@@ -69,34 +70,43 @@ public class ProjectController {
 	@PostMapping("/projects")
 	public ResponseEntity<Project> addProject(@Valid @RequestBody Project project)
 			throws AddressException, MessagingException {
-		Project proj = new Project();
-		ProjectUser projectuser ;
-		proj.setProjectname(project.getProjectname());
-		proj.setProjecttype(project.getProjecttype());
-		proj.setDescription(project.getDescription());
-		Project insertedProject = projectRepository.save(proj);
-		
-		for (int i = 0; i < project.getUsers().size(); i++) {
-			projectuser= new ProjectUser();
-			projectuser.setProjectid(proj.getProjectid());
-			projectuser.setUserid(project.getUsers().get(i).getUserid());
-			projectuser.setRole_id(project.getRoles().get(i).getId());
-			projectUserRepository.save(projectuser);
+		if (projectRepository.findByProjectname(project.getProjectname()).size()<=0) {
+			Project proj = new Project();
+			ProjectUser projectuser;
+			proj.setProjectname(project.getProjectname());
+			proj.setArtifactcategory(project.getArtifactcategory());
+			proj.setDescription(project.getDescription());
+			Project insertedProject = projectRepository.save(proj);
+			for (int i = 0; i < project.getProjectuser().size(); i++) {
+				projectuser = new ProjectUser();
+				projectuser.setProjectid(proj.getProjectid());
+				projectuser.setUserid(project.getProjectuser().get(i).getUserid());
+				projectuser.setRole_id(project.getProjectuser().get(i).getRole_id());
+				projectuser.setEmail(project.getProjectuser().get(i).getEmail());
+				projectuser.setRolename(project.getProjectuser().get(i).getRolename());
+				projectuser.setUsername(project.getProjectuser().get(i).getUsername());
+//			projectuser.setUserid(project.getUsers().get(i).getUserid());
+//			projectuser.setRole_id(project.getRoles().get(i).getId());
+				projectUserRepository.save(projectuser);
+			}
+			/*
+			 * List<Users> newUsersList = project.getUsers(); List<Users> existingUserList =
+			 * new ArrayList<>(); for (int i = 0; i < newUsersList.size(); i++) { Users
+			 * existingUser = usersRepository.findByemail(newUsersList.get(i).getEmail());
+			 * existingUserList.add(existingUser); } proj.setUsers(existingUserList);
+			 * List<Role> newRoleList = project.getRoles(); List<Role> existingRoleList =
+			 * new ArrayList<>(); for (int i = 0; i < newRoleList.size(); i++) { List<Role>
+			 * existingRole = roleRepository.findByName(newRoleList.get(i).getName()); for
+			 * (int j = 0; j < existingRole.size(); j++) {
+			 * existingRoleList.add(existingRole.get(j)); } }
+			 * proj.setRoles(existingRoleList);
+			 */
+
+			return new ResponseEntity<Project>(insertedProject, HttpStatus.CREATED);
+		} else {
+			throw new ProjectAlreadyExistsException(
+					"Project already exists with this name :: " + project.getProjectname());
 		}
-		/*
-		 * List<Users> newUsersList = project.getUsers(); List<Users> existingUserList =
-		 * new ArrayList<>(); for (int i = 0; i < newUsersList.size(); i++) { Users
-		 * existingUser = usersRepository.findByemail(newUsersList.get(i).getEmail());
-		 * existingUserList.add(existingUser); } proj.setUsers(existingUserList);
-		 * List<Role> newRoleList = project.getRoles(); List<Role> existingRoleList =
-		 * new ArrayList<>(); for (int i = 0; i < newRoleList.size(); i++) { List<Role>
-		 * existingRole = roleRepository.findByName(newRoleList.get(i).getName()); for
-		 * (int j = 0; j < existingRole.size(); j++) {
-		 * existingRoleList.add(existingRole.get(j)); } }
-		 * proj.setRoles(existingRoleList);
-		 */
-		
-		return new ResponseEntity<Project>(insertedProject, HttpStatus.CREATED);
 	}
 
 //	@DeleteMapping("/roles/{roleId}/permissions/{permissionId}")
