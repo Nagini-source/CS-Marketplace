@@ -1,0 +1,16 @@
+{
+  "email": "uuy@gmail.com",
+  "name": "uuu",
+  "password": "uuu",
+  "projectList": [
+     {
+	  "projectid":"1",
+      "projectname":"proj1"
+     },
+    {  
+	  "projectid":"2",
+      "projectname":"proj2"
+     }
+  ],
+  "username": "uuy@gmail.com"
+}
